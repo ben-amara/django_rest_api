@@ -2,8 +2,8 @@ from . import api
 from django.urls import path
 
 urlpatterns = [
-    path('order/confirmation', api.api_order_confirmation, name='order-confirmation'),
-    path('order/create', api.api_order_create, name='order-create'),
-    path('product/<int:product_id>/description', api.api_product_description, name='product-description'),
-    path('product/<int:product_id>/list', api.api_product_list, name='product-list'),
+    path('products', api.api_products_list, name='products-list'),
+    path('products/<int:product_id>/', api.api_product_individual, name='products-individual'),
+    path('products/<int:product_id>/details', api.api_products_details, name='product-details'),
+    path('products/<int:product_id>/purchase', api.api_products_purchase, name='product-purchase'),
 ]
