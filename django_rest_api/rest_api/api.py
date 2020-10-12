@@ -23,6 +23,17 @@ def api_products_list(request):
         POST new product
     """
     if request.method == 'POST':
+        if 'name' not in request.data:
+            return Response('name is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'code' not in request.data:
+            return Response('code is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'cost' not in request.data:
+            return Response('cost is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'description' not in request.data:
+            return Response('description is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'inventory_on_hand' not in request.data:
+            return Response('inventory_on_hand is required', status=status.HTTP_417_EXPECTATION_FAILED)
+
         obj = Products.objects.create(**request.data)
         return Response({"success": "true", "product_code": obj.code}, status=status.HTTP_200_OK)
     else:
@@ -60,6 +71,20 @@ def api_products_purchase(request, product_id=None):
         return Response('No data in POST', status=status.HTTP_417_EXPECTATION_FAILED)
 
     if request.method == 'POST':
+        if 'customer_name' not in request.data:
+            return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'customer_email' not in request.data:
+            return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'customer_phone' not in request.data:
+            return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'shipping_address' not in request.data:
+            return Response('shipping_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
+
+        if 'billing_address' not in request.data:
+            return Response('billing_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'purchase_products' not in request.data:
+            return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
+
         product = get_object_or_404(Products, pk=product_id)
         obj = OrderCreate.objects.create(**request.data, product=product)
         return Response({"success": "true", "order_create_id": obj.order_create_id}, status=status.HTTP_200_OK)
