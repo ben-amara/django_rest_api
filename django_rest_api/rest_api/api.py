@@ -30,15 +30,12 @@ def api_products_list(request):
         return Response({"data": products_list}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET', 'PUT'])
+@api_view(['GET'])
 @renderer_classes([JSONRenderer])
 @permission_classes((permissions.AllowAny,))
 def api_product_individual(request, product_id=None):
     """ GET product individual data
     """
-    if request.method == 'PUT':
-        obj = Products.objects.filter(code=product_id).update(**request.data)
-        return Response({"success": bool(obj)}, status=status.HTTP_200_OK)
 
     product = ProductsSerializer(get_object_or_404(Products, pk=product_id))
     return Response({"data": product.data}, status=status.HTTP_200_OK)
