@@ -19,6 +19,7 @@ class Products(models.Model):
     class Meta:
         db_table = 'products'
 
+
 class ProductType(models.Model):
     product_type_id = models.AutoField(auto_created=True, primary_key=True, serialize=False)
     type_name = models.CharField(max_length=255, blank=True, null=True)
