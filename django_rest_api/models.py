@@ -107,7 +107,15 @@ class OrderConfirmation(models.Model):
         db_table = 'order_confirmation'
 
 
+class ProductDetails(models.Model):
+    product_details_id = models.AutoField(auto_created=True, primary_key=True, serialize=False)
+    product = models.ForeignKey(Products, models.DO_NOTHING, blank=True, null=True)
+    product_type = models.ForeignKey(ProductType, models.DO_NOTHING, blank=True, null=True)
+    category = models.ForeignKey(ProductCategory, models.DO_NOTHING, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
 
+    class Meta:
+        db_table = 'product_details'
 
 
 

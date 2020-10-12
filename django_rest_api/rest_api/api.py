@@ -5,8 +5,10 @@ from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from django_rest_api.models import Products
-from django_rest_api.serializers import ProductsSerializer
+from django_rest_api.models import Products, ProductDetails
+from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer
+from django.shortcuts import get_object_or_404, get_list_or_404
+
 
 try:
     import ujson as json
@@ -28,13 +30,18 @@ def api_products_list(request):
         return Response({"data": products_list}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @renderer_classes([JSONRenderer])
 @permission_classes((permissions.AllowAny,))
 def api_product_individual(request, product_id=None):
     """ GET product individual data
     """
-    return Response({"success": "true", "api_function": "api_product_individual", "product_id": product_id, "data": []}, status=status.HTTP_200_OK)
+    if request.method == 'PUT':
+        obj = Products.objects.filter(code=product_id).update(**request.data)
+        return Response({"success": bool(obj)}, status=status.HTTP_200_OK)
+
+    product = ProductsSerializer(get_object_or_404(Products, pk=product_id))
+    return Response({"data": product.data}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @renderer_classes([JSONRenderer])
@@ -43,7 +50,8 @@ def api_products_details(request, product_id=None):
     """ GET products_details by product_id
     """
 
-    return Response({"success": "true", "api_function": "api_products_details", "product_id": product_id, "data": []}, status=status.HTTP_200_OK)
+    product_details = ProductDetailsSerializer(get_list_or_404(ProductDetails, product=product_id))
+    return Response({"product_details": product_details.data }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
