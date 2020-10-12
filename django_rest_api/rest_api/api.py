@@ -61,5 +61,5 @@ def api_products_purchase(request, product_id=None):
 
     if request.method == 'POST':
         product = get_object_or_404(Products, pk=product_id)
-        obj = ProductDetails.objects.create(**request.data, product=product)
+        obj = OrderCreate.objects.create(**request.data, product=product)
         return Response({"success": "true", "order_create_id": obj.order_create_id}, status=status.HTTP_200_OK)
