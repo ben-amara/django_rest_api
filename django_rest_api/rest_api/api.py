@@ -5,7 +5,7 @@ from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from django_rest_api.models import Products, ProductDetails
+from django_rest_api.models import Products, ProductDetails, OrderCreate
 from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 
@@ -59,4 +59,7 @@ def api_products_purchase(request, product_id=None):
     if request.data == {}:
         return Response('No data in POST', status=status.HTTP_417_EXPECTATION_FAILED)
 
-    return Response({"success": "true", "api_function": "api_products_purchase", "product_id": product_id, "data": []}, status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        product = get_object_or_404(Products, pk=product_id)
+        obj = ProductDetails.objects.create(**request.data, product=product)
+        return Response({"success": "true", "order_create_id": obj.order_create_id}, status=status.HTTP_200_OK)
