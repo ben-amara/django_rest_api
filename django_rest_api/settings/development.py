@@ -23,8 +23,12 @@ LOGOUT_REDIRECT_URL = 'core_login'
 # ##### DATABASE CONFIGURATION ############################
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': join(PROJECT_ROOT, 'run', 'dev.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_dev_products',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
