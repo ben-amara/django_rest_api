@@ -8,12 +8,28 @@ from rest_framework.response import Response
 from django_rest_api.models import Products, ProductDetails, OrderCreate
 from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
+from .data import createProducts, createProductsDetail, createOrderCreate
 
 
 try:
     import ujson as json
 except:
     import json
+
+"""
+JUST FOR DEMO TO ADD FAKER PRODUCT
+"""
+@api_view(['GET'])
+@renderer_classes([JSONRenderer])
+@permission_classes((permissions.AllowAny,))
+def api_faker_product(request, product_id=None):
+    """ GET product individual data
+    """
+
+    createProducts()
+    createProductsDetail()
+    createOrderCreate()
+    return Response({"success": "data saved"}, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
 @renderer_classes([JSONRenderer])
