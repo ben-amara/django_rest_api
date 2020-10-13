@@ -53,6 +53,7 @@ class ProductDetails(models.Model):
     product = models.ForeignKey(Products, models.DO_NOTHING, blank=True, null=True)
     product_type = JSONField(blank=True, null=True)
     category = JSONField(blank=True, null=True)
+    pushed_product = models.BooleanField(default=False)
     created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
 
     class Meta:
