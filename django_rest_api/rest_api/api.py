@@ -100,27 +100,36 @@ def api_add_products_details(request, product_id=None):
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
 @permission_classes((permissions.AllowAny,))
-def api_products_purchase(request, product_id=None):
+def api_products_purchase(request):
     """ POST products_purchase by product_id
     """
     if request.data == {}:
         return Response('No data in POST', status=status.HTTP_417_EXPECTATION_FAILED)
 
     if request.method == 'POST':
-        if 'customer_name' not in request.data:
-            return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'customer_email' not in request.data:
-            return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'customer_phone' not in request.data:
-            return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'shipping_address' not in request.data:
-            return Response('shipping_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
 
-        if 'billing_address' not in request.data:
-            return Response('billing_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'purchase_products' not in request.data:
-            return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if isinstance(request.data, list):
+            for item in request.data:
+                if 'customer_name' not in item:
+                    return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
+                if 'customer_email' not in item:
+                    return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
+                if 'customer_phone' not in item:
+                    return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
+                if 'shipping_address' not in item:
+                    return Response('shipping_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
 
-        product = get_object_or_404(Products, pk=product_id)
-        obj = OrderCreate.objects.create(**request.data, product=product)
-        return Response({"success": "true", "order_create_id": obj.order_create_id}, status=status.HTTP_200_OK)
+                if 'billing_address' not in item:
+                    return Response('billing_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
+                if 'purchase_products' not in item:
+                    return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
+                for pp in item['purchase_products']:
+                    code = pp['code']
+                    get_object_or_404(Products, pk=code)
+                    OrderCreate.objects.create(**item)
+        else:
+            for pp in request.data['purchase_products']:
+                code = pp['code']
+                get_object_or_404(Products, pk=code)
+                OrderCreate.objects.create(**request.data)
+    return Response({"success": "created"}, status=status.HTTP_200_OK)
