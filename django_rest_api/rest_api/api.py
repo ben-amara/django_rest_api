@@ -5,7 +5,7 @@ from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from django_rest_api.models import Products, ProductDetails, OrderCreate
+from django_rest_api.models import Products, ProductDetails, OrderCreate, OrderConfirmation
 from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer, OrderCreateSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 from .data import createProducts, createProductsDetail, createOrderCreate
@@ -142,4 +142,32 @@ def api_products_purchase(request):
                 code = pp['code']
                 get_object_or_404(Products, pk=code)
                 OrderCreate.objects.create(**request.data)
+    return Response({"success": "created"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@renderer_classes([JSONRenderer])
+@permission_classes((permissions.AllowAny,))
+def api_products_order_confirmation(request):
+    """ Added order confirmation
+    """
+    if request.data == {}:
+        return Response('No data in POST', status=status.HTTP_417_EXPECTATION_FAILED)
+
+    if request.method == 'POST':
+        if 'customer_name' not in request.data:
+            return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'customer_email' not in request.data:
+            return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'customer_phone' not in request.data:
+            return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'purchase_products' not in request.data:
+            return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
+        if 'order_total' not in request.data:
+            return Response('order_total is required', status=status.HTTP_417_EXPECTATION_FAILED)
+
+        for pp in request.data['purchase_products']:
+            code = pp['code']
+            get_object_or_404(Products, pk=code)
+            OrderConfirmation.objects.create(**request.data)
     return Response({"success": "created"}, status=status.HTTP_200_OK)

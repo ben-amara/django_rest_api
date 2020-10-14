@@ -23,8 +23,9 @@ class Products(models.Model):
 
 
 class OrderConfirmation(models.Model):
-    order_confirmation_id = models.AutoField(auto_created=True, primary_key=True, serialize=False)
-    order_confirmation = models.CharField(max_length=255, blank=True, null=True)
+    confirmation_code = models.AutoField(auto_created=True, primary_key=True, serialize=False)
+    customer_name = models.CharField(max_length=255, blank=True, null=True)
+    customer_email  = models.CharField(max_length=255, blank=True, null=True)
     customer_phone  = JSONField(blank=True, null=True)
     purchase_products  = JSONField(blank=True, null=True)
     order_total = models.IntegerField(default=0)

@@ -8,6 +8,7 @@ urlpatterns = [
     path('products/<int:product_id>/details', api.api_products_details, name='product-details'),
     path('products/purchase', api.api_products_purchase, name='product-purchase'),
     path('products/<int:product_id>/purchase', api.api_products_purchase_by_product_id, name='product-purchase-product-id'),
+    path('products/order/confirmation', api.api_products_order_confirmation, name='product-order-confirmation'),
 
     #JUST FRO DEMO
     path('data', api.api_faker_product, name='faker-product'),
