@@ -6,7 +6,7 @@ from rest_framework.decorators import (api_view, permission_classes,
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from django_rest_api.models import Products, ProductDetails, OrderCreate
-from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer
+from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer, OrderCreateSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 from .data import createProducts, createProductsDetail, createOrderCreate
 
@@ -96,6 +96,16 @@ def api_add_products_details(request, product_id=None):
         product = get_object_or_404(Products, pk=int(request.data['code']))
         ProductDetails.objects.create(product=product, product_type=request.data['product_type'], category=request.data['category'], pushed_product=request.data['pushed_product'])
     return Response({"success": "true"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@renderer_classes([JSONRenderer])
+@permission_classes((permissions.AllowAny,))
+def api_products_purchase_by_product_id(request, product_id=None):
+    """ GET products_purchase by product_id
+    """
+    product = get_object_or_404(Products, pk=product_id)
+    product_purchase = OrderCreateSerializer(get_list_or_404(OrderCreate, purchase_products__0__code=product.code), many=True)
+    return Response({"product_purchase": product_purchase.data }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
