@@ -97,20 +97,20 @@ def api_add_products_details(request, product_id=None):
         ProductDetails.objects.create(product=product, product_type=request.data['product_type'], category=request.data['category'], pushed_product=request.data['pushed_product'])
     return Response({"success": "true"}, status=status.HTTP_200_OK)
 
-@api_view(['GET'])
-@renderer_classes([JSONRenderer])
-@permission_classes((permissions.AllowAny,))
-def api_products_purchase_by_product_id(request, product_id=None):
-    """ GET products_purchase by product_id
-    """
-    product = get_object_or_404(Products, pk=product_id)
-    product_purchase = OrderCreateSerializer(get_list_or_404(OrderCreate, purchase_products__0__code=product.code), many=True)
-    return Response({"product_purchase": product_purchase.data }, status=status.HTTP_200_OK)
+# @api_view(['GET'])
+# @renderer_classes([JSONRenderer])
+# @permission_classes((permissions.AllowAny,))
+# def api_products_purchase_by_product_id(request, product_id=None):
+#     """ GET products_purchase by product_id
+#     """
+#     product = get_object_or_404(Products, pk=product_id)
+#     product_purchase = OrderCreateSerializer(get_list_or_404(OrderCreate, purchase_products__0__code=product.code), many=True)
+#     return Response({"product_purchase": product_purchase.data }, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
 @permission_classes((permissions.AllowAny,))
-def api_products_purchase(request):
+def api_products_purchase(request, product_id=None):
     """ POST products_purchase by product_id
     """
     if request.data == {}:
@@ -133,15 +133,12 @@ def api_products_purchase(request):
                     return Response('billing_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
                 if 'purchase_products' not in item:
                     return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
-                for pp in item['purchase_products']:
-                    code = pp['code']
-                    get_object_or_404(Products, pk=code)
-                    OrderCreate.objects.create(**item)
+
+                product = get_object_or_404(Products, pk=product_id)
+                OrderCreate.objects.create(**item, product=product)
         else:
-            for pp in request.data['purchase_products']:
-                code = pp['code']
-                get_object_or_404(Products, pk=code)
-                OrderCreate.objects.create(**request.data)
+            product = get_object_or_404(Products, pk=product_id)
+            OrderCreate.objects.create(**request.data, product=product)
     return Response({"success": "created"}, status=status.HTTP_200_OK)
 
 

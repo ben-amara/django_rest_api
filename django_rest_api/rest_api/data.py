@@ -1,5 +1,6 @@
 from django_rest_api.models import Products, ProductDetails, OrderCreate
 from django.shortcuts import get_object_or_404, get_list_or_404
+
 def createProducts():
     p = [{
       "name": "product 01",

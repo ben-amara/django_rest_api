@@ -36,7 +36,7 @@ class OrderConfirmation(models.Model):
 
 class OrderCreate(models.Model):
     order_create_id = models.AutoField(auto_created=True, primary_key=True, serialize=False)
-    #product = models.ForeignKey(Products, models.DO_NOTHING, blank=True, null=True)
+    product = models.ForeignKey(Products, models.DO_NOTHING, blank=True, null=True)
     customer_name = models.CharField(max_length=255, blank=True, null=True)
     customer_email  = models.CharField(max_length=255, blank=True, null=True)
     customer_phone  = JSONField(blank=True, null=True)
