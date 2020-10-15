@@ -21,19 +21,6 @@ class Products(models.Model):
     class Meta:
         db_table = 'products'
 
-
-class OrderConfirmation(models.Model):
-    confirmation_code = models.AutoField(auto_created=True, primary_key=True, serialize=False)
-    customer_name = models.CharField(max_length=255, blank=True, null=True)
-    customer_email  = models.CharField(max_length=255, blank=True, null=True)
-    customer_phone  = JSONField(blank=True, null=True)
-    purchase_products  = JSONField(blank=True, null=True)
-    order_total = models.IntegerField(default=0)
-    created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
-
-    class Meta:
-        db_table = 'order_confirmation'
-
 class OrderCreate(models.Model):
     order_create_id = models.AutoField(auto_created=True, primary_key=True, serialize=False)
     product = models.ForeignKey(Products, models.DO_NOTHING, blank=True, null=True)
@@ -47,6 +34,19 @@ class OrderCreate(models.Model):
 
     class Meta:
         db_table = 'order_create'
+
+class OrderConfirmation(models.Model):
+    confirmation_code = models.AutoField(auto_created=True, primary_key=True, serialize=False)
+    order_create = models.ForeignKey(OrderCreate, models.DO_NOTHING, blank=True, null=True)
+    customer_name = models.CharField(max_length=255, blank=True, null=True)
+    customer_email  = models.CharField(max_length=255, blank=True, null=True)
+    customer_phone  = JSONField(blank=True, null=True)
+    purchase_products  = JSONField(blank=True, null=True)
+    order_total = models.IntegerField(default=0)
+    created_at = models.DateTimeField(blank=True, null=True, auto_now_add=True)
+
+    class Meta:
+        db_table = 'order_confirmation'
 
 
 class ProductDetails(models.Model):
