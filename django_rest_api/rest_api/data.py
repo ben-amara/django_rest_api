@@ -7,7 +7,7 @@ def createProducts():
       "code": 300,
       "cost": 30,
       "description": "added new prodcut 303",
-      "inventory_on_hand": 2
+      "inventory_on_hand": 5
         },
         {
       "name": "product 01",
