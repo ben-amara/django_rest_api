@@ -144,6 +144,9 @@ def api_products_purchase(request, product_id=None):
                 order = OrderCreate.objects.create(**elOrder, product=product)
                 OrderConfirmation.objects.create(**elOrderConf, order_create=order)
                 Products.objects.filter(pk=product_id).update(inventory_on_hand=product.inventory_on_hand - 1)
+                for el in item['purchase_products']:
+                    if el['code'] == product_id:
+                        Products.objects.filter(pk=product_id).update(inventory_on_hand=product.inventory_on_hand - el['quantity'])
         else:
             if 'customer_name' not in request.data:
                 return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
@@ -170,7 +173,9 @@ def api_products_purchase(request, product_id=None):
             product = get_object_or_404(Products, pk=product_id)
             order = OrderCreate.objects.create(**elOrder, product=product)
             OrderConfirmation.objects.create(**elOrderConf, order_create=order)
-            Products.objects.filter(pk=product_id).update(inventory_on_hand=product.inventory_on_hand - 1)
+            for item in request.data['purchase_products']:
+                if item['code'] == product_id:
+                    Products.objects.filter(pk=product_id).update(inventory_on_hand=product.inventory_on_hand - item['quantity'])
     return Response({"success": "created"}, status=status.HTTP_200_OK)
 
 
