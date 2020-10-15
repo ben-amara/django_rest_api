@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from django_rest_api.models import Products, ProductDetails, OrderCreate, OrderConfirmation
 from django_rest_api.serializers import ProductsSerializer, ProductDetailsSerializer, OrderCreateSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .data import createProducts, createProductsDetail, createOrderCreate
+from .data import createProducts, createProductsDetail
 
 
 try:
@@ -28,7 +28,7 @@ def api_faker_product(request, product_id=None):
 
     createProducts()
     createProductsDetail()
-    createOrderCreate()
+    #createOrderCreate()
     return Response({"success": "data saved"}, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
@@ -144,6 +144,21 @@ def api_products_purchase(request, product_id=None):
                 order = OrderCreate.objects.create(**elOrder, product=product)
                 OrderConfirmation.objects.create(**elOrderConf, order_create=order)
         else:
+            if 'customer_name' not in request.data:
+                return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
+            if 'customer_email' not in request.data:
+                return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
+            if 'customer_phone' not in request.data:
+                return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
+            if 'shipping_address' not in request.data:
+                return Response('shipping_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
+
+            if 'billing_address' not in request.data:
+                return Response('billing_address is required', status=status.HTTP_417_EXPECTATION_FAILED)
+            if 'purchase_products' not in request.data:
+                return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
+            if 'order_total' not in request.data:
+                return Response('order_total is required', status=status.HTTP_417_EXPECTATION_FAILED)
             elOrder = {'customer_name': request.data['customer_name'], 'customer_email': request.data['customer_email'],
                     'customer_phone': request.data['customer_phone'], 'shipping_address': request.data['shipping_address'],
                     'billing_address': request.data['billing_address'], 'purchase_products': request.data['purchase_products']}
@@ -157,29 +172,29 @@ def api_products_purchase(request, product_id=None):
     return Response({"success": "created"}, status=status.HTTP_200_OK)
 
 
-@api_view(['POST'])
-@renderer_classes([JSONRenderer])
-@permission_classes((permissions.AllowAny,))
-def api_products_order_confirmation(request):
-    """ Added order confirmation
-    """
-    if request.data == {}:
-        return Response('No data in POST', status=status.HTTP_417_EXPECTATION_FAILED)
+# @api_view(['POST'])
+# @renderer_classes([JSONRenderer])
+# @permission_classes((permissions.AllowAny,))
+# def api_products_order_confirmation(request):
+#     """ Added order confirmation
+#     """
+#     if request.data == {}:
+#         return Response('No data in POST', status=status.HTTP_417_EXPECTATION_FAILED)
 
-    if request.method == 'POST':
-        if 'customer_name' not in request.data:
-            return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'customer_email' not in request.data:
-            return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'customer_phone' not in request.data:
-            return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'purchase_products' not in request.data:
-            return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
-        if 'order_total' not in request.data:
-            return Response('order_total is required', status=status.HTTP_417_EXPECTATION_FAILED)
+#     if request.method == 'POST':
+#         if 'customer_name' not in request.data:
+#             return Response('customer_name is required', status=status.HTTP_417_EXPECTATION_FAILED)
+#         if 'customer_email' not in request.data:
+#             return Response('customer_email is required', status=status.HTTP_417_EXPECTATION_FAILED)
+#         if 'customer_phone' not in request.data:
+#             return Response('customer_phone is required', status=status.HTTP_417_EXPECTATION_FAILED)
+#         if 'purchase_products' not in request.data:
+#             return Response('purchase_products is required', status=status.HTTP_417_EXPECTATION_FAILED)
+#         if 'order_total' not in request.data:
+#             return Response('order_total is required', status=status.HTTP_417_EXPECTATION_FAILED)
 
-        for pp in request.data['purchase_products']:
-            code = pp['code']
-            get_object_or_404(Products, pk=code)
-            OrderConfirmation.objects.create(**request.data)
-    return Response({"success": "created"}, status=status.HTTP_200_OK)
+#         for pp in request.data['purchase_products']:
+#             code = pp['code']
+#             get_object_or_404(Products, pk=code)
+#             OrderConfirmation.objects.create(**request.data)
+#     return Response({"success": "created"}, status=status.HTTP_200_OK)

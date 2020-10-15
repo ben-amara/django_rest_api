@@ -63,120 +63,120 @@ def createProductsDetail():
         product = get_object_or_404(Products, pk=item['code'])
         ProductDetails.objects.create(product=product, product_type=item['product_type'], category=item['category'], pushed_product=item['pushed_product'])
 
-def createOrderCreate():
-    i = 301
-    oc=[
-        {
-                "customer_name": "aute",
-                "customer_email": "culpa dolor laborum incididunt",
-                "customer_phone": [
-                    {
-                    "number": 18953712,
-                    "type": "voluptate sunt consequat aliqua occaecat",
-                    "contact": True
-                    },
-                    {
-                    "number": 46388657,
-                    "type": "quis",
-                    "contact": True
-                    }
-                ],
-                "shipping_address": [
-                    {
-                    "street": "Excepteur in id est irure",
-                    "city": "sit anim sint tempor",
-                    "state": "incididunt aliqua",
-                    "zipcode": 96878743
-                    }
-                ],
-                "billing_address": [
-                    {
-                    "street": "amet dolor ut do consectetur",
-                    "city": "deserunt eiusmod ullamco",
-                    "state": "in irure nisi Excepteur",
-                    "zipcode": 81798561
-                    },
-                    {
-                    "street": "nulla velit voluptate pariatur",
-                    "city": "dolor amet",
-                    "state": "esse dolor labore",
-                    "zipcode": 18729617
-                    },
-                    {
-                    "street": "dolore laboris sint commodo dolor",
-                    "city": "Duis",
-                    "state": "fugiat dolore elit commodo",
-                    "zipcode": -41344223
-                    }
-                ],
-                "purchase_products": [
-                    {
-                    "code": 91001861,
-                    "quantity": -67325778
-                    },
-                    {
-                    "code": 69406482,
-                    "quantity": -6735510
-                    }
-                ]
-            },
-        {
-                "customer_name": "aute",
-                "customer_email": "culpa dolor laborum incididunt",
-                "customer_phone": [
-                    {
-                    "number": 18953712,
-                    "type": "voluptate sunt consequat aliqua occaecat",
-                    "contact": False
-                    },
-                    {
-                    "number": 46388657,
-                    "type": "quis",
-                    "contact": True
-                    }
-                ],
-                "shipping_address": [
-                    {
-                    "street": "Excepteur in id est irure",
-                    "city": "sit anim sint tempor",
-                    "state": "incididunt aliqua",
-                    "zipcode": 96878743
-                    }
-                ],
-                "billing_address": [
-                    {
-                    "street": "amet dolor ut do consectetur",
-                    "city": "deserunt eiusmod ullamco",
-                    "state": "in irure nisi Excepteur",
-                    "zipcode": 81798561
-                    },
-                    {
-                    "street": "nulla velit voluptate pariatur",
-                    "city": "dolor amet",
-                    "state": "esse dolor labore",
-                    "zipcode": 18729617
-                    },
-                    {
-                    "street": "dolore laboris sint commodo dolor",
-                    "city": "Duis",
-                    "state": "fugiat dolore elit commodo",
-                    "zipcode": -41344223
-                    }
-                ],
-                "purchase_products": [
-                    {
-                    "code": 91001861,
-                    "quantity": -67325778
-                    },
-                    {
-                    "code": 69406482,
-                    "quantity": -6735510
-                    }
-                ]
-    }]
+# def createOrderCreate():
+#     i = 301
+#     oc=[
+#         {
+#                 "customer_name": "aute",
+#                 "customer_email": "culpa dolor laborum incididunt",
+#                 "customer_phone": [
+#                     {
+#                     "number": 18953712,
+#                     "type": "voluptate sunt consequat aliqua occaecat",
+#                     "contact": True
+#                     },
+#                     {
+#                     "number": 46388657,
+#                     "type": "quis",
+#                     "contact": True
+#                     }
+#                 ],
+#                 "shipping_address": [
+#                     {
+#                     "street": "Excepteur in id est irure",
+#                     "city": "sit anim sint tempor",
+#                     "state": "incididunt aliqua",
+#                     "zipcode": 96878743
+#                     }
+#                 ],
+#                 "billing_address": [
+#                     {
+#                     "street": "amet dolor ut do consectetur",
+#                     "city": "deserunt eiusmod ullamco",
+#                     "state": "in irure nisi Excepteur",
+#                     "zipcode": 81798561
+#                     },
+#                     {
+#                     "street": "nulla velit voluptate pariatur",
+#                     "city": "dolor amet",
+#                     "state": "esse dolor labore",
+#                     "zipcode": 18729617
+#                     },
+#                     {
+#                     "street": "dolore laboris sint commodo dolor",
+#                     "city": "Duis",
+#                     "state": "fugiat dolore elit commodo",
+#                     "zipcode": -41344223
+#                     }
+#                 ],
+#                 "purchase_products": [
+#                     {
+#                     "code": 91001861,
+#                     "quantity": -67325778
+#                     },
+#                     {
+#                     "code": 69406482,
+#                     "quantity": -6735510
+#                     }
+#                 ]
+#             },
+#         {
+#                 "customer_name": "aute",
+#                 "customer_email": "culpa dolor laborum incididunt",
+#                 "customer_phone": [
+#                     {
+#                     "number": 18953712,
+#                     "type": "voluptate sunt consequat aliqua occaecat",
+#                     "contact": False
+#                     },
+#                     {
+#                     "number": 46388657,
+#                     "type": "quis",
+#                     "contact": True
+#                     }
+#                 ],
+#                 "shipping_address": [
+#                     {
+#                     "street": "Excepteur in id est irure",
+#                     "city": "sit anim sint tempor",
+#                     "state": "incididunt aliqua",
+#                     "zipcode": 96878743
+#                     }
+#                 ],
+#                 "billing_address": [
+#                     {
+#                     "street": "amet dolor ut do consectetur",
+#                     "city": "deserunt eiusmod ullamco",
+#                     "state": "in irure nisi Excepteur",
+#                     "zipcode": 81798561
+#                     },
+#                     {
+#                     "street": "nulla velit voluptate pariatur",
+#                     "city": "dolor amet",
+#                     "state": "esse dolor labore",
+#                     "zipcode": 18729617
+#                     },
+#                     {
+#                     "street": "dolore laboris sint commodo dolor",
+#                     "city": "Duis",
+#                     "state": "fugiat dolore elit commodo",
+#                     "zipcode": -41344223
+#                     }
+#                 ],
+#                 "purchase_products": [
+#                     {
+#                     "code": 91001861,
+#                     "quantity": -67325778
+#                     },
+#                     {
+#                     "code": 69406482,
+#                     "quantity": -6735510
+#                     }
+#                 ]
+#     }]
 
 
-    for item in oc:
-        product = get_object_or_404(Products, pk=i)
-        OrderCreate.objects.create(**item, product=product)
-        i = i + 1
+#     for item in oc:
+#         product = get_object_or_404(Products, pk=i)
+#         OrderCreate.objects.create(**item, product=product)
+#         i = i + 1
